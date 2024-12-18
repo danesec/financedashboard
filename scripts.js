@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
     initializeTotals();
     waitForChartElements();
-    setupTooltip();
 });
 
 function waitForChartElements() {
@@ -413,33 +412,6 @@ document.addEventListener('mouseover', (event) => {
         }
     }
 });
-
-function setupTooltip() {
-    const exportBtn = document.getElementById('exportRevenueCsvBtn');
-    const tooltip = document.getElementById('export-tooltip');
-
-    if (!exportBtn || !tooltip) {
-        console.error('Tooltip elements not found');
-        return;
-    }
-
-    exportBtn.addEventListener('mouseenter', (e) => {
-        const rect = exportBtn.getBoundingClientRect();
-        tooltip.style.left = `${rect.right + 10}px`;
-        tooltip.style.top = `${rect.top - (tooltip.offsetHeight / 2) + (rect.height / 2)}px`;
-        tooltip.classList.add('tooltip-visible');
-    });
-
-    exportBtn.addEventListener('mouseleave', () => {
-        tooltip.classList.remove('tooltip-visible');
-    });
-
-    // For debugging
-    console.log('Tooltip setup complete');
-    exportBtn.addEventListener('click', () => {
-        console.log('Button clicked');
-    });
-}
 
 
 

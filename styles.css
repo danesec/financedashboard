@@ -310,6 +310,8 @@ label {
     display: block; /* Show dropdown consistently */
 }
 
+
+
 .dropdown-content a {
     color: black;
     padding: 12px 16px;
@@ -368,91 +370,4 @@ select option {
     align-items: center;
     gap: 10px;
 }
-
-/* Add these styles to your existing CSS file */
-.hidden {
-    display: none !important;
-}
-
-.tooltip {
-    position: absolute;
-    background-color: #333;
-    color: white;
-    padding: 12px 16px;
-    border-radius: 6px;
-    font-size: 14px;
-    z-index: 9999;
-    max-width: 300px;
-    pointer-events: none;
-    display: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    line-height: 1.4;
-    white-space: normal;
-    text-align: left;
-}
-
-.tooltip-visible {
-    display: block;
-}
-
-.tooltip-trigger {
-    position: relative;
-}
-
-.tooltip.visible {
-    opacity: 1;
-}
-
-.tooltip::before {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    margin-left: -5px;
-    border-width: 5px;
-    border-style: solid;
-    border-color: #333 transparent transparent transparent;
-}
-
-/* ...existing code... */
-
-[data-tooltip] {
-    position: relative;
-    cursor: pointer;
-}
-
-[data-tooltip]:before {
-    content: attr(data-tooltip);
-    position: absolute;
-    bottom: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 8px 12px;
-    background-color: #333;
-    color: white;
-    font-size: 14px;
-    white-space: normal; /* Changed from nowrap to normal */
-    border-radius: 4px;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.2s;
-    width: 250px; /* Fixed width */
-    min-width: 200px;
-    max-width: 250px;
-    line-height: 1.4;
-    text-align: left;
-    z-index: 1000;
-    word-wrap: break-word;
-    height: auto;
-    left: auto; /* Remove left alignment */
-    right: 0; /* Align to right edge of button */
-    transform: translateX(0); /* Remove transform */
-}
-
-[data-tooltip]:hover:before {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* ...existing code... */
 
