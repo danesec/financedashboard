@@ -1,0 +1,308 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    overflow: overlay;
+}
+
+header {
+    text-align: center;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 0;
+    box-shadow: 0 4px 2px -2px gray;
+}
+
+#financialSummary {
+    margin: 20px 0;
+    text-align: left; /* Change to left align */
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 75%;
+    margin-left: auto; /* Align to the right */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap; /* Ensure children wrap within the parent */
+    display: flex;
+}
+
+#financialSummary > div {
+    flex: 1;
+}
+
+#chartsContainer {
+    width: 40%; /* Set to 40% of the parent section */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end; /* Align to the bottom right */
+    margin-left: 0; /* Adjust margin to move it to the left */
+    max-width: 100%; /* Ensure it doesn't exceed the container */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    overflow: hidden; /* Prevent overflow */
+}
+
+#expensesSection {
+    width: 80%; /* Set to 100% of the parent section */
+    float: none; /* Remove float */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+#chartsSection {
+    width: 100%;
+    max-width: 100%; /* Ensure it doesn't exceed the container */
+    box-sizing: border-box;
+}
+
+#myChart {
+    width: 100%; /* Use percentage for width */
+    max-width: 400px; /* Ensure it doesn't exceed 400 pixels */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 400px; /* Restrict maximum height */
+}
+
+#revenueSection {
+    width: 75%;
+}
+
+#financialSummary p {
+    margin: 10px 0;
+    text-align: center;
+}
+
+#exportExcelBtn {
+    align-self: flex-end;
+    margin-bottom: 10px;
+}
+
+.chart-controls {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.chart-controls label {
+    margin-right: 5px;
+}
+
+.chart-controls select {
+    margin-left: 10px;
+    margin-right: 5px;
+}
+
+section {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    width: 75%;
+    margin-left: auto; /* Align to the right */
+    overflow: visible; /* Ensures dropdown is not clipped */
+    position: relative; /* Allows dropdown to position correctly */
+}
+
+h2 {
+    border-bottom: 2px solid #4CAF50;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    margin: 20px 0;
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: overlay;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#expenseTable {
+    width: 100%; /* Ensure table does not exceed parent width */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #4CAF50;
+    color: white;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    padding: 20px;
+    border-radius: 5px;
+    width: 50%;
+    max-width: 500px;
+    text-align: left;
+    background: white;
+}
+
+.close {
+    float: right;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-form {
+    background-color: white; /* Ensures the modal has a visible background */
+    padding: 20px;           /* Adds spacing inside the modal */
+    border-radius: 5px;      /* Optional: Adds rounded corners */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a subtle shadow */
+}
+
+input[type="text"], input[type="date"], input[type="number"], input[type="email"], textarea {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+input[type="text"]:focus, input[type="date"]:focus, input[type="number"]:focus, input[type="email"]:focus, textarea:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+.paid {
+    background-color: lightgreen;
+}
+
+.unpaid {
+    background-color: lightcoral;
+}
+/* Add these styles to your existing CSS file */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px; /* Fixed width to prevent resizing */
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    top: 100%; /* Position below the button */
+    left: 0; /* Align to the left edge of the parent */
+    right: auto; /* Ensure no conflicting alignment */
+    transform: translateX(0); /* Keep static alignment */
+    transform-origin: top left; /* Prevent shifts based on origin */
+    border-radius: 5px; /* Add rounded corners */
+    overflow: hidden; /* Ensure content doesn't overflow */
+}
+
+.dropdown:hover .dropdown-content {
+    display: block; /* Show dropdown consistently */
+}
+
+
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+.dropbtn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px; /* Add rounded corners */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+dropbtn:hover {
+    background-color: #3e8e41;
+}
+
+/* Enhance the styles for the dropdown elements to make them look nicer */
+select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 16px;
+    color: #333;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    appearance: none; /* Remove default arrow */
+    background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="gray" class="bi bi-chevron-down" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    background-size: 16px 16px;
+}
+
+select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+    outline: none;
+}
+
+select option {
+    padding: 10px;
+}
+
+/* Style for the dropdown container to ensure proper alignment */
+.dropdown-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
