@@ -305,4 +305,9 @@ select option {
     align-items: center;
     gap: 10px;
 }
+.chart-container {
+    width: 100%;
+    max-width: 800px; /* Adjust as needed */
+    height: 400px;
+}
 
