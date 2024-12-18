@@ -1,0 +1,122 @@
+<main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0"></script>
+    <script src="charts.js"></script>
+    <section id="financialSummary">
+        <p>
+            <strong>Total Revenue:</strong> $<span id="revenueSubtotal">0.00</span>
+            <strong> | Total Expenses:</strong> $<span id="expensesSubtotal">0.00</span>
+            <strong> | Net Balance:</strong> $<span id="totalBalance">0.00</span>
+        </p>
+        <div id="expensesSection"> <!-- Changed from section to div -->
+            <h2>Expenses</h2>
+            <div class="dropdown-container">
+                <select id="expenseTypeFilter"> <!-- Moved to the left of 'Search by name...' -->
+                    <option value="">All Types</option>
+                    <option value="Registration">Registration</option>
+                    <option value="Sponsorship">Sponsorship</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Auction Fees">Auction Fees</option>
+                    <option value="Donation">Donation</option>
+                    <option value="Other">Other</option>
+                </select>
+                <input type="text" id="expenseSearch" placeholder="Search by name, receipt, or contact" aria-label="Search Expenses"> <!-- Moved to the left of 'Add Expense' -->
+                <button id="addExpenseBtn">Add Expense</button>
+                <button id="exportExpenseCsvBtn">Export Expenses to CSV</button>
+            </div>
+            <table id="expenseTable">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Payment</th>
+                        <th>Name</th>
+                        <th>Contact</th>
+                        <th>Subtotal</th>
+                        <th>Fee</th>
+                        <th>Notes</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="expenseTableBody">
+                    <!-- Default Credit Card Entry -->
+                    <tr class="paid">
+                        <td>Credit Card</td>
+                        <td>2024-12-05</td>
+                        <td>Auto</td>
+                        <td>Auto</td>
+                        <td>Auto</td>
+                        <td id="creditCardSubtotal">1.00</td>
+                        <td id="creditCardFee">1.00</td>
+                        <td>2.9% + $0.30/transaction</td>
+                        <td class="status">Paid</td>
+                        <td>
+                            <button class="toggleStatusBtn" onclick="handleEditCreditCard()">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div> <!-- Changed from section to div -->
+        <div id="chartsContainer">
+            <button id="exportExcelBtn">Export All Selected Finances to Excel</button> <!-- Moved button here -->
+            <section id="chartsSection">
+                <h2>Charts</h2>
+                <canvas id="myChart"></canvas>
+                <div class="chart-controls">
+                    <label for="chartType">Chart Type:</label>
+                    <select id="chartType">
+                        <option value="bar">Bar</option>
+                        <option value="pie">Pie</option>
+                        <option value="line">Line</option>
+                        <option value="doughnut">Doughnut</option>
+                    </select>
+                    <label for="filterType">Filter By Type:</label>
+                    <select id="filterType">
+                        <option value="all">All</option>
+                        <option value="Registration">Registration</option>
+                        <option value="Sponsorship">Sponsorship</option>
+                        <option value="Donation">Donation</option>
+                        <option value="Auction">Auction</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </section>
+        </div>
+    </section>
+    <section id="revenueSection">
+        <h2>Revenue</h2>
+        <div class="dropdown-container">
+            <select id="revenueTypeFilter"> <!-- Moved to the left of 'Search by name...' -->
+                <option value="">All Types</option>
+                <option value="Registration">Registration</option>
+                <option value="Sponsorship">Sponsorship</option>
+                <option value="Donation">Donation</option>
+                <option value="Auction">Auction</option>
+                <option value="Other">Other</option>
+            </select>
+            <input type="text" id="revenueSearch" placeholder="Search by name, receipt, or contact" aria-label="Search Revenue"> <!-- Moved to the left of 'Add Revenue' -->
+            <button id="addRevenueBtn">Add Revenue</button>
+            <button id="exportRevenueCsvBtn">Export Revenue to CSV</button>
+        </div>
+        <table id="revenueTable">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Date</th>
+                    <th>Receipt #</th>
+                    <th>Payment</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Subtotal</th>
+                    <th>Fee</th>
+                    <th>Notes</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="revenueTableBody">  
+            </tbody>
+        </table>
+    </section>
+</main>
