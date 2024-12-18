@@ -6,6 +6,7 @@ function addEntry(type) {
 
     const entryData = {
         type: document.getElementById(`${formPrefix}Type`).value,
+        purchaseType: type === 'Revenue' ? document.getElementById(`${formPrefix}PurchaseType`).value : '',
         date: document.getElementById(`${formPrefix}Date`).value,
         receipt: type === 'Revenue' ? document.getElementById(`${formPrefix}Receipt`).value : '',
         payment: document.getElementById(`${formPrefix}Payment`).value,
@@ -19,6 +20,7 @@ function addEntry(type) {
     const row = document.createElement('tr');
     row.innerHTML = `
         <td>${entryData.type}</td>
+        ${type === 'Revenue' ? `<td>${entryData.purchaseType}</td>` : ''}
         <td>${entryData.date}</td>
         ${type === 'Revenue' ? `<td>${entryData.receipt}</td>` : ''}
         <td>${entryData.payment}</td>
@@ -45,6 +47,7 @@ function updateEntry(type) {
 
     const entryData = {
         type: document.getElementById(`${formPrefix}Type`).value,
+        purchaseType: type === 'Revenue' ? document.getElementById(`${formPrefix}PurchaseType`).value : '',
         date: document.getElementById(`${formPrefix}Date`).value,
         receipt: type === 'Revenue' ? document.getElementById(`${formPrefix}Receipt`)?.value : '',
         payment: document.getElementById(`${formPrefix}Payment`).value,
@@ -57,16 +60,18 @@ function updateEntry(type) {
 
     const row = tableBody.rows[editingRow - 1];
     row.cells[0].textContent = entryData.type;
-    row.cells[1].textContent = entryData.date;
     if (type === 'Revenue') {
-        row.cells[2].textContent = entryData.receipt;
-        row.cells[3].textContent = entryData.payment;
-        row.cells[4].textContent = entryData.name;
-        row.cells[5].textContent = entryData.contact;
-        row.cells[6].textContent = `$${entryData.subtotal}`;
-        row.cells[7].textContent = `$${entryData.fee}`;
-        row.cells[8].textContent = entryData.notes;
+        row.cells[1].textContent = entryData.purchaseType;
+        row.cells[2].textContent = entryData.date;
+        row.cells[3].textContent = entryData.receipt;
+        row.cells[4].textContent = entryData.payment;
+        row.cells[5].textContent = entryData.name;
+        row.cells[6].textContent = entryData.contact;
+        row.cells[7].textContent = `$${entryData.subtotal}`;
+        row.cells[8].textContent = `$${entryData.fee}`;
+        row.cells[9].textContent = entryData.notes;
     } else {
+        row.cells[1].textContent = entryData.date;
         row.cells[2].textContent = entryData.payment;
         row.cells[3].textContent = entryData.name;
         row.cells[4].textContent = entryData.contact;

@@ -2,6 +2,7 @@
   "revenue": [
     {
       "type": "Donation",
+      "purchaseType": "Annual",
       "date": "2024-12-01",
       "receipt": "001",
       "payment": "Credit Card",
@@ -14,6 +15,7 @@
     },
     {
       "type": "Sponsorship",
+      "purchaseType": "Corporate",
       "date": "2024-12-05",
       "receipt": "002",
       "payment": "Bank Transfer",
@@ -26,6 +28,7 @@
     },
     {
       "type": "Donation",
+      "purchaseType": "Annual",
       "date": "2024-12-01",
       "receipt": "001",
       "payment": "Credit Card",
@@ -38,6 +41,7 @@
     },
     {
       "type": "Sponsorship",
+      "purchaseType": "Corporate",
       "date": "2024-12-05",
       "receipt": "002",
       "payment": "Bank Transfer",
@@ -50,6 +54,7 @@
     },
     {
       "type": "Donation",
+      "purchaseType": "Annual",
       "date": "2023-12-01",
       "receipt": "001",
       "payment": "Credit Card",
@@ -62,6 +67,7 @@
     },
     {
       "type": "Sponsorship",
+      "purchaseType": "Corporate",
       "date": "2022-12-05",
       "receipt": "002",
       "payment": "Bank Transfer",
@@ -74,6 +80,7 @@
     },
     {
       "type": "Registration",
+      "purchaseType": "Single Player",
       "date": "2024-08-05",
       "receipt": "002",
       "payment": "Bank Transfer",
@@ -86,6 +93,111 @@
     },
     {
       "type": "Registration",
+      "purchaseType": "Single Player",
+      "date": "2024-12-05",
+      "receipt": "002",
+      "payment": "Bank Transfer",
+      "name": "Jane Smith",
+      "contact": "jane@example.com",
+      "subtotal": 500.00,
+      "fee": 0.00,
+      "notes": "Corporate sponsorship",
+      "status": "Unpaid"
+    },
+    {
+      "type": "Donation",
+      "purchaseType": "Annual",
+      "date": "2024-12-01",
+      "receipt": "001",
+      "payment": "Credit Card",
+      "name": "John Doe",
+      "contact": "john@example.com",
+      "subtotal": 100.00,
+      "fee": 2.00,
+      "notes": "Annual donation",
+      "status": "Paid"
+    },
+    {
+      "type": "Sponsorship",
+      "purchaseType": "Corporate",
+      "date": "2024-12-05",
+      "receipt": "002",
+      "payment": "Bank Transfer",
+      "name": "Jane Smith",
+      "contact": "jane@example.com",
+      "subtotal": 500.00,
+      "fee": 0.00,
+      "notes": "Corporate sponsorship",
+      "status": "Unpaid"
+    },
+    {
+      "type": "Donation",
+      "purchaseType": "Annual",
+      "date": "2024-12-01",
+      "receipt": "001",
+      "payment": "Credit Card",
+      "name": "John Doe",
+      "contact": "john@example.com",
+      "subtotal": 100.00,
+      "fee": 2.00,
+      "notes": "Annual donation",
+      "status": "Paid"
+    },
+    {
+      "type": "Sponsorship",
+      "purchaseType": "Corporate",
+      "date": "2024-12-05",
+      "receipt": "002",
+      "payment": "Bank Transfer",
+      "name": "Jane Smith",
+      "contact": "jane@example.com",
+      "subtotal": 500.00,
+      "fee": 0.00,
+      "notes": "Corporate sponsorship",
+      "status": "Unpaid"
+    },
+    {
+      "type": "Donation",
+      "purchaseType": "Annual",
+      "date": "2023-12-01",
+      "receipt": "001",
+      "payment": "Credit Card",
+      "name": "John Doe",
+      "contact": "john@example.com",
+      "subtotal": 100.00,
+      "fee": 2.00,
+      "notes": "Annual donation",
+      "status": "Paid"
+    },
+    {
+      "type": "Sponsorship",
+      "purchaseType": "Corporate",
+      "date": "2022-12-05",
+      "receipt": "002",
+      "payment": "Bank Transfer",
+      "name": "Jane Smith",
+      "contact": "jane@example.com",
+      "subtotal": 500.00,
+      "fee": 0.00,
+      "notes": "Corporate sponsorship",
+      "status": "Unpaid"
+    },
+    {
+      "type": "Registration",
+      "purchaseType": "Single Player",
+      "date": "2024-08-05",
+      "receipt": "002",
+      "payment": "Bank Transfer",
+      "name": "Jane Smith",
+      "contact": "jane@example.com",
+      "subtotal": 500.00,
+      "fee": 0.00,
+      "notes": "Corporate sponsorship",
+      "status": "Unpaid"
+    },
+    {
+      "type": "Registration",
+      "purchaseType": "Single Player",
       "date": "2024-12-05",
       "receipt": "002",
       "payment": "Bank Transfer",
@@ -98,6 +210,7 @@
     },
     {
       "type": "Auction",
+      "purchaseType": "Corporate",
       "date": "2024-12-05",
       "receipt": "002",
       "payment": "Bank Transfer",
@@ -112,7 +225,7 @@
   "expenses": [
     {
       "type": "Auction",
-      "date": "2024-12-05",
+      "date": "-",
       "payment": "Credit Card",
       "name": "Auction Fees",
       "contact": "-",

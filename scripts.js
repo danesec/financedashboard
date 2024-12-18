@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
     setupEventListeners();
-    updateSummary();
+    initializeTotals();
     waitForChartElements();
+    setupTooltip();
 });
 
 function waitForChartElements() {
@@ -149,6 +150,25 @@ function setupEventListeners() {
     if (exportExcelBtn) {
         exportExcelBtn.addEventListener('click', exportToExcel);
     }
+
+    const revenueType = document.getElementById('addRevenueType');
+    const purchaseType = document.getElementById('addRevenuePurchaseType');
+    
+    if (revenueType && purchaseType) {
+        revenueType.addEventListener('change', () => {
+            const selectedType = revenueType.value;
+            Array.from(purchaseType.getElementsByTagName('optgroup')).forEach(group => {
+                if (group.label === selectedType) {
+                    group.style.display = '';
+                    group.disabled = false;
+                } else {
+                    group.style.display = 'none';
+                    group.disabled = true;
+                }
+            });
+            purchaseType.value = ''; // Reset selection when type changes
+        });
+    }
 }
 
 function toggleStatus(element) {
@@ -183,6 +203,7 @@ function populateRevenueTable(entries) {
 
         row.innerHTML = `
             <td>${entry.type}</td>
+            <td>${entry.purchaseType || '-'}</td>
             <td>${entry.date}</td>
             <td>${entry.receipt}</td>
             <td>${entry.payment}</td>
@@ -223,7 +244,7 @@ function populateExpenseTable(entries) {
             <td>${entry.date}</td>
             <td>${entry.payment}</td>
             <td>${entry.name}</td>
-            <td>${entry.contact}</td>
+            <td class="expense-contact-column">${entry.contact}</td>
             <td>${entry.subtotal.toFixed(2)}</td>
             <td>${entry.fee.toFixed(2)}</td>
             <td>${entry.notes}</td>
@@ -263,15 +284,17 @@ function markAsUnpaid(element) {
 function handleEdit(row) {
     const formPrefix = row.closest('table').id === 'revenueTable' ? 'editRevenue' : 'editExpense';
     document.getElementById(`${formPrefix}Type`).value = row.cells[0].textContent;
-    document.getElementById(`${formPrefix}Date`).value = row.cells[1].textContent;
+    
     if (formPrefix === 'editRevenue') {
-        document.getElementById(`${formPrefix}Receipt`).value = row.cells[2].textContent;
-        document.getElementById(`${formPrefix}Payment`).value = row.cells[3].textContent;
-        document.getElementById(`${formPrefix}Name`).value = row.cells[4].textContent;
-        document.getElementById(`${formPrefix}Contact`).value = row.cells[5].textContent;
-        document.getElementById(`${formPrefix}SubtotalInput`).value = parseFloat(row.cells[6].textContent.replace('$', ''));
-        document.getElementById(`${formPrefix}Fee`).value = parseFloat(row.cells[7].textContent.replace('$', ''));
-        document.getElementById(`${formPrefix}Notes`).value = row.cells[8].textContent;
+        document.getElementById(`${formPrefix}PurchaseType`).value = row.cells[1].textContent;
+        document.getElementById(`${formPrefix}Date`).value = row.cells[2].textContent;
+        document.getElementById(`${formPrefix}Receipt`).value = row.cells[3].textContent;
+        document.getElementById(`${formPrefix}Payment`).value = row.cells[4].textContent;
+        document.getElementById(`${formPrefix}Name`).value = row.cells[5].textContent;
+        document.getElementById(`${formPrefix}Contact`).value = row.cells[6].textContent;
+        document.getElementById(`${formPrefix}SubtotalInput`).value = parseFloat(row.cells[7].textContent.replace('$', ''));
+        document.getElementById(`${formPrefix}Fee`).value = parseFloat(row.cells[8].textContent.replace('$', ''));
+        document.getElementById(`${formPrefix}Notes`).value = row.cells[9].textContent;
     } else {
         document.getElementById(`${formPrefix}Payment`).value = row.cells[2].textContent;
         document.getElementById(`${formPrefix}Name`).value = row.cells[3].textContent;
@@ -325,15 +348,39 @@ function updateSummary() {
 }
 
 function calculateTotal(tableBodyId) {
-    const rows = document.querySelectorAll(`#${tableBodyId} tr`);
+    const rows = document.querySelectorAll(`#${tableBodyId} tr:not(.hidden)`);
     let total = 0;
 
     rows.forEach(row => {
-        const amount = parseFloat(row.cells[6].textContent.replace('$', ''));
-        total += amount;
+        if (!row.cells) return;
+        
+        let subtotal = 0;
+        let fee = 0;
+
+        if (tableBodyId === 'revenueTableBody' && row.cells.length >= 9) {
+            subtotal = parseFloat(row.cells[7].textContent.replace(/[^0-9.-]+/g, '')) || 0;
+            fee = parseFloat(row.cells[8].textContent.replace(/[^0-9.-]+/g, '')) || 0;
+        } else if (tableBodyId === 'expenseTableBody' && row.cells.length >= 7) {
+            subtotal = parseFloat(row.cells[5].textContent.replace(/[^0-9.-]+/g, '')) || 0;
+            fee = parseFloat(row.cells[6].textContent.replace(/[^0-9.-]+/g, '')) || 0;
+        }
+        
+        if (!isNaN(subtotal) && !isNaN(fee)) {
+            total += (subtotal + fee);
+            console.log(`Row total: ${subtotal + fee} (subtotal: ${subtotal}, fee: ${fee})`); // Debug line
+        }
     });
 
+    console.log(`${tableBodyId} final total:`, total); // Debug line
     return total;
+}
+
+// Remove or comment out initializeTotals() from DOMContentLoaded event
+// as we're now calling updateSummary() after data loads
+
+// Add function to update totals on page load
+function initializeTotals() {
+    updateSummary();
 }
 
 function editExpenseEntry(element) {
@@ -366,6 +413,33 @@ document.addEventListener('mouseover', (event) => {
         }
     }
 });
+
+function setupTooltip() {
+    const exportBtn = document.getElementById('exportRevenueCsvBtn');
+    const tooltip = document.getElementById('export-tooltip');
+
+    if (!exportBtn || !tooltip) {
+        console.error('Tooltip elements not found');
+        return;
+    }
+
+    exportBtn.addEventListener('mouseenter', (e) => {
+        const rect = exportBtn.getBoundingClientRect();
+        tooltip.style.left = `${rect.right + 10}px`;
+        tooltip.style.top = `${rect.top - (tooltip.offsetHeight / 2) + (rect.height / 2)}px`;
+        tooltip.classList.add('tooltip-visible');
+    });
+
+    exportBtn.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('tooltip-visible');
+    });
+
+    // For debugging
+    console.log('Tooltip setup complete');
+    exportBtn.addEventListener('click', () => {
+        console.log('Button clicked');
+    });
+}
 
 
 

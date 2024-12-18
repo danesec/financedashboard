@@ -1,22 +1,69 @@
 function filterTable() {
-    const revenueQuery = document.getElementById('revenueSearch').value.toLowerCase();
-    const expenseQuery = document.getElementById('expenseSearch').value.toLowerCase();
-    const revenueRows = document.querySelectorAll('#revenueTableBody tr');
-    const expenseRows = document.querySelectorAll('#expenseTableBody tr');
-    const revenueTypeFilter = document.getElementById('revenueTypeFilter').value.toLowerCase();
-    const expenseTypeFilter = document.getElementById('expenseTypeFilter').value.toLowerCase();
+    const revenueQuery = document.getElementById('revenueSearch')?.value.toLowerCase() || '';
+    const expenseQuery = document.getElementById('expenseSearch')?.value.toLowerCase() || '';
+    const revenueTypeFilter = document.getElementById('revenueTypeFilter')?.value || '';
+    const expenseTypeFilter = document.getElementById('expenseTypeFilter')?.value || '';
 
-    filterRows(revenueRows, revenueQuery, revenueTypeFilter, true);
-    filterRows(expenseRows, expenseQuery, expenseTypeFilter, false);
+    filterRows('#revenueTableBody tr', {
+        searchQuery: revenueQuery,
+        typeFilter: revenueTypeFilter,
+        isRevenue: true
+    });
+
+    filterRows('#expenseTableBody tr', {
+        searchQuery: expenseQuery,
+        typeFilter: expenseTypeFilter,
+        isRevenue: false
+    });
+
+    // Update the summary texts
+    updateSummaryText('revenueSubtotalText', revenueTypeFilter);
+    updateSummaryText('expensesSubtotalText', expenseTypeFilter);
+
+    // Update totals after filtering
+    updateSummary();
 }
 
-function filterRows(rows, query, typeFilter, isRevenue) {
+function filterRows(selector, options) {
+    const { searchQuery, typeFilter, isRevenue } = options;
+    const rows = document.querySelectorAll(selector);
+
     rows.forEach(row => {
-        const description = row.cells[0].textContent.toLowerCase();
-        const receipt = isRevenue ? row.cells[2].textContent.toLowerCase() : '';
-        const contact = row.cells[isRevenue ? 5 : 4].textContent.toLowerCase();
-        const matchesQuery = description.includes(query) || (isRevenue && receipt.includes(query)) || contact.includes(query);
-        const matchesType = typeFilter === '' || description.includes(typeFilter);
-        row.style.display = matchesQuery && matchesType ? '' : 'none';
+        const cells = row.cells;
+        if (!cells.length) return;
+
+        const type = cells[0].textContent.toLowerCase();
+        const purchaseType = isRevenue ? cells[1].textContent.toLowerCase() : '';
+        const name = cells[isRevenue ? 5 : 3].textContent.toLowerCase();
+        const receipt = isRevenue ? cells[3].textContent.toLowerCase() : '';
+        const contact = cells[isRevenue ? 6 : 4].textContent.toLowerCase();
+        const notes = cells[isRevenue ? 9 : 7].textContent.toLowerCase();
+
+        const matchesSearch = searchQuery === '' || 
+            name.includes(searchQuery) || 
+            type.includes(searchQuery) || 
+            purchaseType.includes(searchQuery) ||  // Add Purchase Type to search
+            (isRevenue && receipt.includes(searchQuery)) || 
+            contact.includes(searchQuery) ||
+            notes.includes(searchQuery);
+
+        const matchesType = typeFilter === '' || type === typeFilter.toLowerCase();
+
+        if (matchesSearch && matchesType) {
+            row.style.display = '';
+            row.classList.remove('hidden');
+        } else {
+            row.style.display = 'none';
+            row.classList.add('hidden');
+        }
     });
+}
+
+function updateSummaryText(elementId, filterValue) {
+    const element = document.getElementById(elementId);
+    if (element) {
+        const baseText = elementId.includes('revenue') ? 'Revenue' : 'Expenses';
+        const displayFilter = filterValue || 'All';
+        element.textContent = `${baseText} (${displayFilter}):`;
+    }
 }

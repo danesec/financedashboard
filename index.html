@@ -41,13 +41,13 @@
                 loadHTML('mainContent', 'main_content.html', () => {
                     loadHTML('modals', 'modals.html', () => {
                         loadHTML('footer', 'footer.html', () => {
-                            setupEventListeners();
-                            updateSummary();
+                            setupEventListeners(); // Restore this line
                             fetch('revenue_expenses.json')
                                 .then(response => response.json())
                                 .then(data => {
                                     populateRevenueTable(data.revenue);
                                     populateExpenseTable(data.expenses);
+                                    updateSummary(); // Move this here
                                     if (typeof drawCharts === 'function') {
                                         drawCharts();
                                     }

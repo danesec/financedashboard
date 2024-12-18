@@ -28,43 +28,72 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    flex-wrap: wrap; /* Ensure children wrap within the parent */
+    flex-wrap: nowrap; /* Ensure children wrap within the parent */
     display: flex;
+    position: relative;
+    overflow-x: hidden;
+    gap: 0; /* Remove gap since we're using margin-right on leftContent */
 }
 
 #financialSummary > div {
     flex: 1;
 }
 
+/* Remove duplicate styles */
+#financialSummary h2 {
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#leftContent {
+    flex: 0 0 65%; /* Increased from 55% */
+    max-width: 65%;
+    min-width: 65%;
+    margin-right: 20px;
+}
+
 #chartsContainer {
-    width: 40%; /* Set to 40% of the parent section */
+    flex: 0 0 30%; /* Decreased from 40% */
+    min-width: 30%;
+    max-width: 30%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-end; /* Align to the bottom right */
-    margin-left: 0; /* Adjust margin to move it to the left */
+    align-items: stretch; /* Changed from flex-end to stretch */
+    margin-left: auto; /* Push to the right */
     max-width: 100%; /* Ensure it doesn't exceed the container */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    overflow: hidden; /* Prevent overflow */
+    overflow: visible; /* Changed from hidden to visible */
+    position: sticky;
+    top: 20px;
+    height: fit-content;
+    align-self: flex-start;
 }
 
 #expensesSection {
-    width: 80%; /* Set to 100% of the parent section */
+    width: 100%; /* Changed from 80% */
     float: none; /* Remove float */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    min-width: 100%;
+    position: relative;
+    left: 0;
+    transition: none;
 }
 
 #chartsSection {
     width: 100%;
+    min-width: 100%;
     max-width: 100%; /* Ensure it doesn't exceed the container */
     box-sizing: border-box;
+    padding: 10px;
 }
 
 #myChart {
     width: 100%; /* Use percentage for width */
-    max-width: 400px; /* Ensure it doesn't exceed 400 pixels */
-    height: auto; /* Maintain aspect ratio */
-    max-height: 400px; /* Restrict maximum height */
+    min-width: 100%;
+    max-width: 100%;
+    height: 400px; /* Set fixed height */
+    min-height: 350px; /* Set minimum height */
 }
 
 #revenueSection {
@@ -83,18 +112,31 @@ header {
 
 .chart-controls {
     display: flex;
-    justify-content: start;
+    flex-direction: row; /* Change to row from column */
+    justify-content: center; /* Center the controls */
     align-items: center;
-    margin-top: 10px;
+    margin-top: 15px;
+    gap: 15px; /* Space between control groups */
+    width: 100%;
 }
 
 .chart-controls label {
-    margin-right: 5px;
+    margin: 0; /* Remove default margins */
+    white-space: nowrap; /* Prevent label wrapping */
 }
 
 .chart-controls select {
-    margin-left: 10px;
-    margin-right: 5px;
+    margin: 0 0 0 5px; /* Only add margin to left side */
+    width: auto; /* Let select size to content */
+    min-width: 100px;
+    max-width: 120px;
+}
+
+/* Add a control group class to keep label+select pairs together */
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 section {
@@ -116,6 +158,20 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* Update heading styles for perfect alignment */
+#expensesSection h2,
+#chartsSection h2 {
+    margin: 0;
+    padding: 15px 0;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 2px solid #4CAF50;
+    display: flex;
+    align-items: center;
+    font-size: 1.5em;
+    box-sizing: content-box;
+}
+
 table {
     width: 100%;
     margin: 20px 0;
@@ -129,6 +185,15 @@ table {
 #expenseTable {
     width: 100%; /* Ensure table does not exceed parent width */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    min-width: 100%;
+    position: relative;
+    left: 0;
+}
+
+/* Hide contact column in expenses table */
+#expenseTable th.expense-contact-column,
+#expenseTable td.expense-contact-column {
+    display: none;
 }
 
 th, td {
@@ -245,8 +310,6 @@ label {
     display: block; /* Show dropdown consistently */
 }
 
-
-
 .dropdown-content a {
     color: black;
     padding: 12px 16px;
@@ -305,9 +368,91 @@ select option {
     align-items: center;
     gap: 10px;
 }
-.chart-container {
-    width: 100%;
-    max-width: 800px; /* Adjust as needed */
-    height: 400px;
+
+/* Add these styles to your existing CSS file */
+.hidden {
+    display: none !important;
 }
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    z-index: 9999;
+    max-width: 300px;
+    pointer-events: none;
+    display: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    line-height: 1.4;
+    white-space: normal;
+    text-align: left;
+}
+
+.tooltip-visible {
+    display: block;
+}
+
+.tooltip-trigger {
+    position: relative;
+}
+
+.tooltip.visible {
+    opacity: 1;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+}
+
+/* ...existing code... */
+
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+}
+
+[data-tooltip]:before {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 8px 12px;
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    white-space: normal; /* Changed from nowrap to normal */
+    border-radius: 4px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.2s;
+    width: 250px; /* Fixed width */
+    min-width: 200px;
+    max-width: 250px;
+    line-height: 1.4;
+    text-align: left;
+    z-index: 1000;
+    word-wrap: break-word;
+    height: auto;
+    left: auto; /* Remove left alignment */
+    right: 0; /* Align to right edge of button */
+    transform: translateX(0); /* Remove transform */
+}
+
+[data-tooltip]:hover:before {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* ...existing code... */
 
