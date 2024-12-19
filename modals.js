@@ -10,11 +10,9 @@ function setupEventListeners() {
     if (addRevenueBtn) {
         addRevenueBtn.addEventListener('click', () => {
             clearForm('addRevenue');
-            const modal = document.getElementById('addRevenueModal');
-            if (modal) {
-                modal.classList.add('modal-background');
-                modal.style.display = 'flex';
-                modal.querySelector('.modal-content').classList.add('modal-content');
+            if (addRevenueModal) {
+                addRevenueModal.classList.add('modal-background');
+                addRevenueModal.style.display = 'flex';
             }
         });
     }
@@ -22,11 +20,9 @@ function setupEventListeners() {
     if (addExpenseBtn) {
         addExpenseBtn.addEventListener('click', () => {
             clearForm('addExpense');
-            const modal = document.getElementById('addExpenseModal');
-            if (modal) {
-                modal.classList.add('modal-background');
-                modal.style.display = 'flex';
-                modal.querySelector('.modal-content').classList.add('modal-content');
+            if (addExpenseModal) {
+                addExpenseModal.classList.add('modal-background');
+                addExpenseModal.style.display = 'flex';
             }
         });
     }
@@ -42,17 +38,25 @@ function setupEventListeners() {
         });
     });
 
-    if (addRevenueBtn && addRevenueModal) {
-        addRevenueBtn.addEventListener('click', () => {
-            clearForm('addRevenue');
-            addRevenueModal.style.display = 'flex';
+    // Open Edit Expense Modal
+    const expenseTableBody = document.getElementById('expenseTableBody');
+    if (expenseTableBody) {
+        expenseTableBody.addEventListener('click', (event) => {
+            if (event.target.classList.contains('editBtn')) {
+                const row = event.target.closest('tr');
+                handleEdit(row);
+            }
         });
     }
 
-    if (addExpenseBtn && addExpenseModal) {
-        addExpenseBtn.addEventListener('click', () => {
-            clearForm('addExpense');
-            addExpenseModal.style.display = 'flex';
+    // Open Edit Revenue Modal
+    const revenueTableBody = document.getElementById('revenueTableBody');
+    if (revenueTableBody) {
+        revenueTableBody.addEventListener('click', (event) => {
+            if (event.target.classList.contains('editBtn')) {
+                const row = event.target.closest('tr');
+                handleEdit(row);
+            }
         });
     }
 }
@@ -73,13 +77,12 @@ function handleEdit(row) {
         document.getElementById(`${formPrefix}Notes`).value = row.cells[9].textContent;
     } else {
         document.getElementById(`${formPrefix}Date`).value = row.cells[1].textContent;
-        document.getElementById(`${formPrefix}Receipt`).value = row.cells[2].textContent;
-        document.getElementById(`${formPrefix}Payment`).value = row.cells[3].textContent;
-        document.getElementById(`${formPrefix}Name`).value = row.cells[4].textContent;
-        document.getElementById(`${formPrefix}Contact`).value = row.cells[5].textContent;
-        document.getElementById(`${formPrefix}SubtotalInput`).value = parseFloat(row.cells[6].textContent.replace('$', ''));
-        document.getElementById(`${formPrefix}Fee`).value = parseFloat(row.cells[7].textContent.replace('$', ''));
-        document.getElementById(`${formPrefix}Notes`).value = row.cells[8].textContent;
+        document.getElementById(`${formPrefix}Payment`).value = row.cells[2].textContent;
+        document.getElementById(`${formPrefix}Name`).value = row.cells[3].textContent;
+        document.getElementById(`${formPrefix}Contact`).value = row.cells[4].textContent;
+        document.getElementById(`${formPrefix}SubtotalInput`).value = parseFloat(row.cells[5].textContent.replace('$', ''));
+        document.getElementById(`${formPrefix}Fee`).value = parseFloat(row.cells[6].textContent.replace('$', ''));
+        document.getElementById(`${formPrefix}Notes`).value = row.cells[7].textContent;
     }
     document.getElementById(`${formPrefix}Modal`).style.display = 'flex';
     document.getElementById(`${formPrefix}Form`).dataset.editingRow = row.rowIndex;
@@ -89,4 +92,15 @@ function handleDelete(row) {
     row.remove();
     updateSummary();
     drawCharts(); // Redraw charts after deleting an entry
+}
+
+function populateEditExpenseForm(row) {
+    document.getElementById('editExpenseType').value = row.cells[0].textContent;
+    document.getElementById('editExpenseDate').value = row.cells[1].textContent;
+    document.getElementById('editExpensePayment').value = row.cells[2].textContent;
+    document.getElementById('editExpenseName').value = row.cells[3].textContent;
+    document.getElementById('editExpenseSubtotal').value = parseFloat(row.cells[4].textContent.replace('$', ''));
+    document.getElementById('editExpenseFee').value = parseFloat(row.cells[5].textContent.replace('$', ''));
+    document.getElementById('editExpenseNotes').value = row.cells[6].textContent;
+    // Assuming 'status' is handled elsewhere
 }

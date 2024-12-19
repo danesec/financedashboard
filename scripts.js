@@ -150,6 +150,11 @@ function setupEventListeners() {
         exportExcelBtn.addEventListener('click', exportToExcel);
     }
 
+    const exportRevenueByInvoiceCsvBtn = document.getElementById('exportRevenueByInvoiceCsvBtn');
+    if (exportRevenueByInvoiceCsvBtn) {
+        exportRevenueByInvoiceCsvBtn.addEventListener('click', exportRevenueByInvoiceToCSV);
+    }
+
     const revenueType = document.getElementById('addRevenueType');
     const purchaseType = document.getElementById('addRevenuePurchaseType');
     
@@ -219,6 +224,9 @@ function populateRevenueTable(entries) {
                         <a href="#" onclick="markAsPaid(this)">Mark as Paid</a>
                         <a href="#" onclick="markAsUnpaid(this)">Mark as Unpaid</a>
                         <a href="#" onclick="editRevenueEntry(this)">Edit</a>
+                        <a href="#">Send invoice with PDF attached</a>
+                        <a href="#">View invoice</a>
+                        <a href="#">Download Invoice</a>
                         <a href="#" onclick="deleteEntry(this)">Delete</a>
                     </div>
                 </div>

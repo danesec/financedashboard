@@ -1,3 +1,10 @@
+/* Apply border-box to all elements */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9;
@@ -5,6 +12,7 @@ body {
     margin: 0;
     padding: 0;
     overflow: overlay;
+    overflow-x: hidden; /* Hide horizontal overflow */
 }
 
 header {
@@ -31,8 +39,9 @@ header {
     flex-wrap: nowrap; /* Ensure children wrap within the parent */
     display: flex;
     position: relative;
-    overflow-x: hidden;
+    overflow-x: visible;
     gap: 0; /* Remove gap since we're using margin-right on leftContent */
+    margin-right: 0; /* Set right margin to 0 */
 }
 
 #financialSummary > div {
@@ -78,6 +87,7 @@ header {
     position: relative;
     left: 0;
     transition: none;
+    margin-right: 0; /* Set right margin to 0 */
 }
 
 #chartsSection {
@@ -86,6 +96,7 @@ header {
     max-width: 100%; /* Ensure it doesn't exceed the container */
     box-sizing: border-box;
     padding: 10px;
+    margin-right: 0; /* Set right margin to 0 */
 }
 
 #myChart {
@@ -96,8 +107,11 @@ header {
     min-height: 350px; /* Set minimum height */
 }
 
+/* Adjust revenueSection to align to the right with a left gap */
 #revenueSection {
-    width: 75%;
+    width: 75%; /* Set desired width */
+    margin-left: auto; /* Align to the right to create a left gap */
+    margin-right: 0; /* Ensure no right margin */
 }
 
 #financialSummary p {
@@ -146,10 +160,11 @@ section {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 100%;
-    width: 75%;
-    margin-left: auto; /* Align to the right */
+    width: 100%; /* Change from 75% to 100% if necessary */
+    margin-left: 0; /* Remove left margin */
     overflow: visible; /* Ensures dropdown is not clipped */
     position: relative; /* Allows dropdown to position correctly */
+    padding-right: 0; /* Remove right padding to eliminate gap */
 }
 
 h2 {
@@ -303,7 +318,7 @@ label {
     transform: translateX(0); /* Keep static alignment */
     transform-origin: top left; /* Prevent shifts based on origin */
     border-radius: 5px; /* Add rounded corners */
-    overflow: hidden; /* Ensure content doesn't overflow */
+    overflow: visible; /* Ensure content doesn't overflow */
 }
 
 .dropdown:hover .dropdown-content {
@@ -369,5 +384,61 @@ select option {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex-wrap: nowrap; /* Prevent items from wrapping to the next line */
 }
+
+/* Ensure dropdown menus stay within the Expenses Section */
+#expensesSection .dropdown {
+    position: relative;
+}
+
+#expensesSection .dropdown-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: auto;
+    max-width: 200px; /* Adjust as needed */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    z-index: 1000; /* Increased from 1 to ensure it overlays other elements */
+    /* Prevent overflow */
+    overflow: hidden;
+}
+
+/* ...existing code... */
+
+.tooltip-button {
+  position: relative;
+  
+  border: none;
+ 
+
+  cursor: pointer;
+ 
+  flex: 0 0 auto; /* Prevent buttons from growing */
+  max-width: fit-content; /* Ensure buttons do not exceed content width */
+}
+
+.tooltip-text {
+  visibility: hidden;
+  background-color: black;
+  color: white;
+  text-align: center;
+  border-radius: 4px;
+  padding: 5px;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.tooltip-button:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* ...existing code... */
 

@@ -34,17 +34,16 @@ function filterRows(selector, options) {
 
         const type = cells[0].textContent.toLowerCase();
         const purchaseType = isRevenue ? cells[1].textContent.toLowerCase() : '';
-        const name = cells[isRevenue ? 5 : 3].textContent.toLowerCase();
+        const name = isRevenue ? cells[5].textContent.toLowerCase() : cells[3].textContent.toLowerCase();
         const receipt = isRevenue ? cells[3].textContent.toLowerCase() : '';
-        const contact = cells[isRevenue ? 6 : 4].textContent.toLowerCase();
-        const notes = cells[isRevenue ? 9 : 7].textContent.toLowerCase();
+        // const contact = isRevenue ? cells[6].textContent.toLowerCase() : ''; // Removed 'Contact' for Expenses
+        const notes = isRevenue ? cells[6].textContent.toLowerCase() : cells[5].textContent.toLowerCase();
 
         const matchesSearch = searchQuery === '' || 
             name.includes(searchQuery) || 
             type.includes(searchQuery) || 
             purchaseType.includes(searchQuery) ||  // Add Purchase Type to search
             (isRevenue && receipt.includes(searchQuery)) || 
-            contact.includes(searchQuery) ||
             notes.includes(searchQuery);
 
         const matchesType = typeFilter === '' || type === typeFilter.toLowerCase();

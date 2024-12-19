@@ -129,3 +129,46 @@ function exportToExcel() {
         reader.readAsDataURL(blob);
     });
 }
+
+async function exportRevenueByInvoiceToCSV() {
+    const response = await fetch('revenue_expenses.json');
+    const data = await response.json();
+    const revenue = data.revenue;
+
+    const groupedData = revenue.reduce((acc, item) => {
+        if (!acc[item.receipt]) {
+            acc[item.receipt] = [];
+        }
+        acc[item.receipt].push(item);
+        return acc;
+    }, {});
+
+    const csv = [];
+    for (const receipt in groupedData) {
+        const items = groupedData[receipt];
+        const row = [receipt];
+        items.forEach(item => {
+            row.push(item.type, item.purchaseType, item.date, item.payment, item.name, item.contact, item.subtotal, item.fee, item.notes, item.status);
+        });
+        csv.push(row.join(','));
+    }
+
+    const csvString = csv.join('\n');
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.setAttribute('hidden', '');
+    a.setAttribute('href', url);
+    a.setAttribute('download', 'revenue_by_invoice.csv');
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+// Ensure the event listener is added after the DOM content is loaded
+document.addEventListener('DOMContentLoaded', () => {
+    const exportRevenueByInvoiceCsvBtn = document.getElementById('exportRevenueByInvoiceCsvBtn');
+    if (exportRevenueByInvoiceCsvBtn) {
+        exportRevenueByInvoiceCsvBtn.addEventListener('click', exportRevenueByInvoiceToCSV);
+    }
+});

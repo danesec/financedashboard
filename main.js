@@ -41,12 +41,24 @@ function calculateTotal(tableBodyId) {
     let total = 0;
 
     rows.forEach(row => {
-        const amount = parseFloat(row.cells[6].textContent.replace('$', ''));
-        total += amount;
+        // Adjust the cell index based on table type
+        if (tableBodyId === 'expenseTableBody') {
+            const amount = parseFloat(row.cells[4].textContent.replace('$', '')); // 'Subtotal' is the 5th cell
+            total += amount;
+        } else {
+            const amount = parseFloat(row.cells[6].textContent.replace('$', '')); // 'Subtotal' is the 7th cell for Revenue
+            total += amount;
+        }
     });
 
     return total;
 }
+
+// Remove or comment out duplicate setupEventListeners if it's already handled in modals.js
+// function setupEventListeners() {
+//     // ...existing event listener code...
+// }
+
 function setupEventListeners() {
     const addRevenueBtn = document.getElementById('addRevenueBtn');
     const addExpenseBtn = document.getElementById('addExpenseBtn');
@@ -149,4 +161,65 @@ function setupEventListeners() {
             handleDelete(event.target.closest('tr'));
         }
     });
+
+    const exportRevenueCsvBtn = document.getElementById('exportRevenueCsvBtn');
+    if (exportRevenueCsvBtn) {
+        exportRevenueCsvBtn.addEventListener('click', exportRevenueTableToCSV);
+    }
+
+    const exportExpenseCsvBtn = document.getElementById('exportExpenseCsvBtn');
+    if (exportExpenseCsvBtn) {
+        exportExpenseCsvBtn.addEventListener('click', exportExpenseTableToCSV);
+    }
+
+    const exportExcelBtn = document.getElementById('exportExcelBtn');
+    if (exportExcelBtn) {
+        exportExcelBtn.addEventListener('click', exportToExcel);
+    }
+
+    const exportRevenueByInvoiceCsvBtn = document.getElementById('exportRevenueByInvoiceCsvBtn');
+    if (exportRevenueByInvoiceCsvBtn) {
+        exportRevenueByInvoiceCsvBtn.addEventListener('click', exportRevenueByInvoiceToCSV);
+    }
+}
+
+function addEntry(type) {
+    // ...existing code for handling form data...
+
+    const row = document.createElement('tr');
+    row.classList.add(entry.status === 'Paid' ? 'paid' : 'unpaid');
+
+    row.innerHTML = `
+        <td>${entry.type}</td>
+        ${type === 'Revenue' ? `<td>${entry.purchaseType || '-'}</td>` : ''}
+        <td>${entry.date}</td>
+        ${type === 'Revenue' ? `<td>${entry.receipt}</td>` : ''}
+        <td>${entry.payment}</td>
+        <td>${entry.name}</td>
+        <td>${entry.contact}</td>
+        <td>$${entry.subtotal}</td>
+        <td>$${entry.fee}</td>
+        <td>${entry.notes}</td>
+        <td class="status">${entry.status}</td>
+        <td>
+            <div class="dropdown">
+                <button class="dropbtn">Actions</button>
+                <div class="dropdown-content">
+                    <a href="#" onclick="markAsPaid(this)">Mark as Paid</a>
+                    <a href="#" onclick="markAsUnpaid(this)">Mark as Unpaid</a>
+                    <a href="#" onclick="${type.toLowerCase()}EditEntry(this)">Edit</a>
+                    <a href="#">Send invoice with PDF attached</a>
+                    <a href="#">View Invoice</a>
+                    <a href="#">Download invoice</a>
+                    <a href="#" onclick="deleteEntry(this)">Delete</a>
+                </div>
+            </div>
+        </td>
+    `;
+
+    document.getElementById(`${type.toLowerCase()}TableBody`).appendChild(row);
+    updateSummary();
+    if (typeof drawCharts === 'function') {
+        drawCharts();
+    }
 }

@@ -1,4 +1,4 @@
-<main>
+<main style="max-width: 100%; overflow-x: hidden;">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0"></script>
     <script src="charts.js"></script>
@@ -11,7 +11,7 @@
             </p>
             <div id="expensesSection"> <!-- Changed from section to div -->
                 <h2>Expenses</h2>
-                <div class="dropdown-container">
+                <div class="dropdown-container"> <!-- Updated -->
                     <select id="expenseTypeFilter"> <!-- Moved to the left of 'Search by name...' -->
                         <option value="">All Types</option>
                         <option value="Registration">Registration</option>
@@ -22,8 +22,14 @@
                         <option value="Other">Other</option>
                     </select>
                     <input type="text" id="expenseSearch" placeholder="Search by name, receipt, or contact" aria-label="Search Expenses"> <!-- Moved to the left of 'Add Expense' -->
-                    <button id="addExpenseBtn">Add Expense</button>
-                    <button id="exportExpenseCsvBtn">Export Expenses</button>
+                    <button id="addExpenseBtn" class="tooltip-button">
+                        Add Expense
+                        <span class="tooltip-text">Add an expense to have a better overview of your finances</span>
+                    </button>
+                    <button id="exportExpenseCsvBtn" class="tooltip-button">
+                        Export Expenses
+                        <span class="tooltip-text">Export all expense data to CSV</span>
+                    </button>
                 </div>
                 <table id="expenseTable">
                     <thead>
@@ -32,12 +38,12 @@
                             <th>Date</th>
                             <th>Payment</th>
                             <th>Name</th>
-                            <th class="expense-contact-column">Contact</th>
+                            <!-- <th class="expense-contact-column">Contact</th> --> <!-- Removed Contact column header -->
                             <th>Subtotal</th>
                             <th>Fee</th>
                             <th>Notes</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th>Actions</th> <!-- Ensure this header exists and aligns correctly -->
                         </tr>
                     </thead>
                     <tbody id="expenseTableBody">
@@ -47,13 +53,21 @@
                             <td>Auto</td>
                             <td>Auto</td>
                             <td>Auto</td>
-                            <td class="expense-contact-column">Auto</td>
-                            <td id="creditCardSubtotal">1.00</td>
-                            <td id="creditCardFee">1.00</td>
+                            <!-- <td class="expense-contact-column">Auto</td> --> <!-- Omitted Contact cell -->
+                            <td>$1.00</td>
+                            <td>$1.00</td>
                             <td>2.9% + $0.30/transaction</td>
                             <td class="status">Paid</td>
                             <td>
-                                <button class="toggleStatusBtn" onclick="handleEditCreditCard()">Edit</button>
+                                <div class="dropdown">
+                                    <button class="dropbtn">Actions</button>
+                                    <div class="dropdown-content">
+                                        <a href="#" class="markAsPaid">Mark as Paid</a>
+                                        <a href="#" class="markAsUnpaid">Mark as Unpaid</a>
+                                        <a href="#" class="editBtn">Edit</a>
+                                        <a href="#" class="deleteBtn">Delete</a>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -61,7 +75,10 @@
             </div> <!-- Changed from section to div -->
         </div>
         <div id="chartsContainer">
-            <button id="exportExcelBtn">Export All Finances</button> <!-- Moved button here -->
+            <button id="exportExcelBtn" class="tooltip-button">
+                Export All Finances
+                <span class="tooltip-text">Export all financial data to Excel</span>
+            </button> <!-- Moved button here -->
             <div id="chartsSection">
                 <h2>Charts</h2>
                 <canvas id="myChart"></canvas>
@@ -91,8 +108,8 @@
         </div>
     </section>
     <section id="revenueSection">
-        <h2>Revenue</h2>
-        <div class="dropdown-container">
+        <h2>Revenue</h2><p>Each purchase is listed separately, even if multiple purchases are made on the same invoice.  Use the Export Revenue by invoice option for compressed purchases.</p>
+        <div class="dropdown-container"> <!-- Updated -->
             <select id="revenueTypeFilter"> <!-- Moved to the left of 'Search by name...' -->
                 <option value="">All Types</option>
                 <option value="Registration">Registration</option>
@@ -102,8 +119,18 @@
                 <option value="Other">Other</option>
             </select>
             <input type="text" id="revenueSearch" placeholder="Search by Purchase Type, Name, Receipt, Contact or Note" aria-label="Search Revenue"> <!-- Moved to the left of 'Add Revenue' -->
-            <button id="addRevenueBtn">Add Revenue</button>
-            <button id="exportRevenueCsvBtn">Export Revenue</button>
+            <button id="addRevenueBtn" class="tooltip-button">
+                Add Revenue
+                <span class="tooltip-text">Add a revenue entry to track income</span>
+            </button>
+            <button id="exportRevenueCsvBtn" class="tooltip-button">
+                Export Revenue by purchase
+                <span class="tooltip-text">Export revenue with each purchase separately listed</span>
+            </button>
+            <button id="exportRevenueByInvoiceCsvBtn" class="tooltip-button">
+                Export Revenue by invoice
+                <span class="tooltip-text">Export revenue by invoice/receipt number</span>
+            </button>
         </div>
         <table id="revenueTable">
             <thead>
@@ -123,7 +150,32 @@
                 </tr>
             </thead>
             <tbody id="revenueTableBody">  
+
             </tbody>
         </table>
     </section>
+    <!-- Ensure both 'Add Expense' and 'Edit Expense' modals are loaded -->
+    <div id="modals">
+        <!-- Add Expense Modal -->
+        <div id="addExpenseModal" class="modal">
+            <div class="modal-content">
+                <!-- ...Add Expense Form as updated above... -->
+            </div>
+        </div>
+
+        <!-- Edit Expense Modal -->
+        <div id="editExpenseModal" class="modal">
+            <div class="modal-content">
+                <!-- ...Edit Expense Form as updated above... -->
+            </div>
+        </div>
+    </div>
+    <!-- Ensure scripts are loaded after all elements are present -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@2.0.0"></script>
+    <script src="charts.js"></script>
+    <script src="common.js"></script>
+    <script src="forms.js"></script>
+    <script src="modals.js"></script>
+    <script src="main.js"></script>
 </main>
